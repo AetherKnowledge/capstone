@@ -3,12 +3,13 @@
 import { UserType } from "@/app/generated/prisma";
 import authOptions from "@/lib/auth/authOptions";
 import { CommentData, commentSchema, newPostSchema } from "@/lib/schemas";
+import { Buckets, getBucket } from "@/lib/supabase/client";
 import { authenticateUser, formatDatetime } from "@/lib/utils";
 import { prisma } from "@/prisma/client";
+import StorageFileApi from "@supabase/storage-js/dist/module/packages/StorageFileApi";
 import { fileTypeFromBuffer } from "file-type";
-import { access, mkdir, writeFile } from "fs/promises";
 import { getServerSession } from "next-auth";
-import { join } from "path";
+import path from "path";
 
 export type PostProps = {
   id: string;
@@ -111,6 +112,13 @@ export async function getPosts(): Promise<PostProps[]> {
 
 export async function createPost(formData: FormData): Promise<void> {
   const session = await getServerSession(authOptions);
+  const bucket = await getBucket(
+    Buckets.Posts,
+    session?.supabaseAccessToken || ""
+  );
+
+  console.log(session, bucket);
+
   if (
     !session ||
     !authenticateUser(session, UserType.Admin) ||
@@ -149,8 +157,16 @@ export async function createPost(formData: FormData): Promise<void> {
   if (images && images.length > 0) {
     await Promise.all(
       images.map(async (file) => {
-        const filename = await createFile(file, postId);
-        imageUrls.push(`/events/${postId}/${filename}`);
+        if (
+          !file ||
+          !(file instanceof File) ||
+          file.size === 0 ||
+          !session.user.id
+        )
+          return;
+
+        const url = await createFile(file, postId, bucket, session.user.id);
+        imageUrls.push(url);
       })
     );
   }
@@ -163,7 +179,12 @@ export async function createPost(formData: FormData): Promise<void> {
   });
 }
 
-export async function createFile(file: File, postId: number): Promise<string> {
+export async function createFile(
+  file: File,
+  postId: number,
+  bucket: StorageFileApi,
+  userId: string
+): Promise<string> {
   if (!file || !(file instanceof File) || file.size === 0) {
     throw new Error("No file uploaded");
   }
@@ -186,23 +207,19 @@ export async function createFile(file: File, postId: number): Promise<string> {
     throw new Error("Uploaded file is not a valid image");
   }
 
-  // Here you would typically save the buffer to a storage solution
-  const rootDir = process.cwd();
   const ext = type?.ext || "bin";
+  const filename = crypto.randomUUID();
+  const pathSafe = path.posix.join(userId, `${postId}`, `${filename}.${ext}`);
 
-  // Ensure the directory exists (async way)
-  const dir = join(rootDir, "public", "events", postId.toString());
-  try {
-    await access(dir);
-  } catch {
-    await mkdir(dir, { recursive: true });
-  }
+  bucket.upload(pathSafe, buffer, {
+    contentType: type.mime,
+    upsert: false,
+  });
 
-  const filename = `${crypto.randomUUID()}.${ext}`;
-  const path = join(dir, filename);
-  await writeFile(path, buffer);
+  const url = bucket.getPublicUrl(pathSafe);
+  console.log("Uploaded file URL:", url);
 
-  return filename;
+  return url.data.publicUrl;
 }
 
 // export async function getPostImage(

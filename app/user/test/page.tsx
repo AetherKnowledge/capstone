@@ -1,7 +1,9 @@
-import { bucket } from "@/lib/supabaseClient";
+import authOptions from "@/lib/auth/authOptions";
+import { Buckets, getBucket } from "@/lib/supabase/client";
 import { fileTypeFromBuffer } from "file-type";
+import { getServerSession } from "next-auth/next";
 
-const Test = () => {
+const Test = async () => {
   async function upload(formData: FormData) {
     "use server";
 
@@ -32,7 +34,20 @@ const Test = () => {
     const ext = type?.ext || "bin";
     const filename = crypto.randomUUID();
 
-    const { data, error } = await bucket.upload(filename, buffer, {
+    const session = await getServerSession(authOptions);
+
+    console.log("User session:", session);
+
+    if (!session || !session?.supabaseAccessToken) {
+      throw new Error("User is not authenticated");
+    }
+
+    const path = `${session.user.id}/${filename}.${ext}`;
+
+    const { data, error } = await getBucket(
+      Buckets.Posts,
+      session?.supabaseAccessToken
+    ).upload(path, buffer, {
       contentType: type.mime,
       upsert: false,
     });

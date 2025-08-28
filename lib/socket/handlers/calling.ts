@@ -370,11 +370,15 @@ export async function leaveCall(
     return;
   }
 
-  await prisma.callMember.delete({
-    where: {
-      callId_userId: { callId, userId: client.clientToken.sub! },
-    },
-  });
+  try {
+    await prisma.callMember.delete({
+      where: {
+        callId_userId: { callId, userId: client.clientToken.sub! },
+      },
+    });
+  } catch (error) {
+    console.error("Error leaving call:", error);
+  }
 
   // If no members are left, delete the call
   if (call.callMember.length - 1 < 2) {

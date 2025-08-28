@@ -3,6 +3,7 @@ import { DefaultSession, DefaultUser } from "next-auth";
 
 declare module "next-auth" {
   interface Session {
+    supabaseAccessToken?: string;
     user: {
       id?: string;
       type?: UserType;

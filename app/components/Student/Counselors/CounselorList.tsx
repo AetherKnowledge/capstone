@@ -4,6 +4,7 @@ import { useState } from "react";
 import { IoIosSearch } from "react-icons/io";
 import SelectBox from "../../SelectBox";
 import CounselorsTable from "./CounselorsTable";
+
 const CounselorList = () => {
   const [name, setName] = useState<string | null>(null);
 

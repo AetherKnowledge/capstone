@@ -1,4 +1,5 @@
 "use client";
+import { useSession } from "next-auth/react";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 interface UseWebSocketOptions {
@@ -24,7 +25,7 @@ export function useWebSocket(
 ): UseWebSocketReturn {
   const {
     reconnect = true,
-    reconnectIntervalMs = 10000,
+    reconnectIntervalMs = 5000,
     maxReconnectAttempts = 0, // 0 means unlimited attempts
   } = options;
 
@@ -33,32 +34,35 @@ export function useWebSocket(
   const [isConnected, setIsConnected] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const reconnectTimeout = useRef<NodeJS.Timeout | null>(null);
+  const { data: session, status } = useSession();
 
   const connect = useCallback(() => {
     if (socketRef.current) return;
 
-    const socket = new WebSocket(urlFn());
+    if (!session) {
+      console.log("[WebSocket] Skipping connect: user not authenticated");
+      return;
+    }
 
+    const socket = new WebSocket(urlFn());
     socket.onopen = () => {
       setIsConnected(true);
       setError(null);
       reconnectAttempts.current = 0;
       console.log("[WebSocket] Connected");
     };
-
     socket.onclose = (event) => {
       console.log("[WebSocket] Closed", event);
       console.log(event.code, event.reason);
       setIsConnected(false);
       socketRef.current = null;
-
       if (event.code !== 1000) {
         // Only set error if the closure was not intentional (code 1000 means normal closure)
         console.log("WebSocket connection closed unexpectedly.");
       }
-
       if (
         reconnect &&
+        session && // only reconnect if still authenticated
         (maxReconnectAttempts === 0 ||
           reconnectAttempts.current < maxReconnectAttempts)
       ) {
@@ -67,24 +71,27 @@ export function useWebSocket(
             ? 10000
             : reconnectIntervalMs * 2 ** reconnectAttempts.current;
         reconnectAttempts.current += 1;
-
         console.log(
           `[WebSocket] Attempting reconnect #${reconnectAttempts.current} in ${delay}ms`
         );
-
         reconnectTimeout.current = setTimeout(() => {
           connect();
         }, delay);
       }
     };
-
     socket.onerror = (event) => {
       console.error("[WebSocket] Error:", event);
       setError("WebSocket encountered an error.");
     };
-
     socketRef.current = socket;
-  }, [urlFn, reconnect, reconnectIntervalMs, maxReconnectAttempts]);
+  }, [
+    urlFn,
+    reconnect,
+    reconnectIntervalMs,
+    maxReconnectAttempts,
+    status,
+    session,
+  ]);
 
   const disconnect = useCallback(() => {
     reconnectTimeout.current && clearTimeout(reconnectTimeout.current);
@@ -100,17 +107,19 @@ export function useWebSocket(
   }, []);
 
   useEffect(() => {
-    // Only connect if not already connected
-    if (!socketRef.current) {
+    if (status === "authenticated" && !socketRef.current) {
+      // wait a tick to avoid blocking render
       setTimeout(() => {
         connect();
       }, 50);
+    } else if (status === "unauthenticated") {
+      disconnect();
     }
 
     return () => {
       disconnect();
     };
-  }, []);
+  }, [status, connect, disconnect]);
 
   return {
     socket: socketRef.current,

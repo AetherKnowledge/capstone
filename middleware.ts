@@ -1,5 +1,5 @@
-import { UserType } from "@/app/generated/prisma"; // Adjust if path is different
 import { NextRequestWithAuth, withAuth } from "next-auth/middleware";
+import { UserType } from "./app/generated/prisma";
 
 export default withAuth(
   function middleware(req: NextRequestWithAuth) {

@@ -7,6 +7,10 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "*.googleusercontent.com",
       },
+      {
+        protocol: "https",
+        hostname: "tiztpjjhneuyrbjpsyne.supabase.co",
+      },
     ],
   },
   experimental: {
@@ -14,6 +18,7 @@ const nextConfig: NextConfig = {
       bodySizeLimit: "5mb",
     },
   },
+  allowedDevOrigins: ["*.jcserver.net"],
 };
 
 export default nextConfig;

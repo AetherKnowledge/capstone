@@ -1,13 +1,18 @@
 import { createManyChatsWithOthers } from "@/lib/utils";
 import { prisma } from "@/prisma/client";
-import { PrismaAdapter } from "@next-auth/prisma-adapter";
+import { SupabaseAdapter } from "@auth/supabase-adapter";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
+import process from "process";
 
 export const authOptions: NextAuthOptions = {
-  adapter: PrismaAdapter(prisma),
+  adapter: SupabaseAdapter({
+    url: process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    secret: process.env.SUPABASE_SERVICE_ROLE_KEY!,
+  }),
   providers: [
     CredentialsProvider({
       name: "Credentials",
@@ -22,7 +27,7 @@ export const authOptions: NextAuthOptions = {
       async authorize(credentials, req) {
         if (!credentials?.email || !credentials.password) return null;
 
-        const user = await prisma.user.findUnique({
+        const user = await prisma.users.findUnique({
           where: { email: credentials.email },
         });
         if (!user) return null;
@@ -52,13 +57,28 @@ export const authOptions: NextAuthOptions = {
       return token;
     },
     async session({ session, token }) {
+      const signingSecret = process.env.SUPABASE_JWT_SECRET;
+
       const user = await prisma.user.findUnique({
         where: { email: session.user.email! },
       });
+
       session.user.id = user?.id;
       session.user.type = user?.type;
       token.id = user?.id;
       token.type = user?.type;
+
+      if (signingSecret) {
+        const payload = {
+          aud: "authenticated",
+          exp: Math.floor(new Date(session.expires).getTime() / 1000),
+          sub: user?.id,
+          email: user?.email,
+          role: "authenticated",
+        };
+        session.supabaseAccessToken = jwt.sign(payload, signingSecret);
+      }
+
       return session;
     },
   },

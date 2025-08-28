@@ -55,7 +55,7 @@ const SocketProvider = ({ children }: Prop) => {
   }, []);
   const { socket } = useWebSocket(url, {
     reconnect: true,
-    reconnectIntervalMs: 1000,
+    reconnectIntervalMs: 5000,
   });
 
   const recieveMessageHandlersRef = useRef<Set<(data: Message) => void>>(
