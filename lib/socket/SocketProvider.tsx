@@ -49,7 +49,7 @@ export const useSocket = () => {
 const SocketProvider = ({ children }: Prop) => {
   const url = useMemo(() => {
     return () =>
-      process.env.NODE_ENV === "production"
+      process.env.NEXT_PUBLIC_URL?.startsWith("https")
         ? `wss://${window.location.host}/api/user/socket`
         : `ws://${window.location.host}/api/user/socket`;
   }, []);

@@ -9,7 +9,13 @@ const ChatbotPage = async () => {
   if (!session || session.user.type !== UserType.Student)
     return redirect("/user/dashboard");
 
-  return <StudentChatbotPage />;
+  return (
+    <div className="flex-1 pt-25">
+      <div className="bg-base-100 shadow-br rounded-xl">
+        <StudentChatbotPage />
+      </div>
+    </div>
+  );
 };
 
 export default ChatbotPage;

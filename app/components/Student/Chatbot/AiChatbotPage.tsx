@@ -1,5 +1,4 @@
 import AiChatBox from "./AiChatbox/AiChatBox";
-import React from "react";
 
 const AiChatbotPage = () => {
   return (

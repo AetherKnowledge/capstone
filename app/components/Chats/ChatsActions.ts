@@ -10,6 +10,7 @@ import { prisma } from "@/prisma/client";
 import { getServerSession } from "next-auth";
 
 export async function getChats(): Promise<ParsedChat[]> {
+  console.log("Fetching chats...");
   const session = await getServerSession(authOptions);
 
   if (!session || !(await authenticateUser(session))) {

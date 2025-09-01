@@ -18,7 +18,11 @@ const EventsPage = async () => {
         <div className="divider mt-[-8] pl-3 pr-3" />
         <div className="overflow-y-auto h-full">
           {posts.map((post) => (
-            <EventBox key={post.id} {...post} />
+            <div key={post.id}>
+              <EventBox {...post} />
+              <div className="divider mt-[-8] pl-3 pr-3" />
+              <p>test</p>
+            </div>
           ))}
         </div>
       </div>

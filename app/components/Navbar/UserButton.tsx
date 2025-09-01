@@ -1,7 +1,6 @@
 "use client";
-import React from "react";
-import { useSession, signIn, signOut } from "next-auth/react";
 import { Session } from "next-auth";
+import { signIn, signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 
 const UserButton = () => {
@@ -53,7 +52,14 @@ const AuthenticatedUserButton = (session: Session) => {
 
         <ul className="absolute right-0 mt-2 w-52 menu dropdown-content bg-base-100 text-base-content rounded-md z-10 p-2 shadow-br">
           <li>
-            <a>Item 1</a>
+            <label>
+              <input
+                type="checkbox"
+                value="lcup-dark"
+                className="toggle theme-controller"
+              />
+              Dark Mode
+            </label>
           </li>
           <li>
             <button onClick={() => signOut()}>Sign Out</button>

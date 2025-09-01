@@ -18,7 +18,7 @@ interface UseWebSocketReturn {
 
 export function useWebSocket(
   urlFn: () => string = () =>
-    process.env.NODE_ENV === "production"
+    process.env.NEXT_PUBLIC_URL?.startsWith("https")
       ? `wss://${window.location.host}/api/user/socket`
       : `ws://${window.location.host}/api/user/socket`,
   options: UseWebSocketOptions = {}

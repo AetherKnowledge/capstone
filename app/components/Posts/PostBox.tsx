@@ -1,6 +1,5 @@
 "use client";
 import { useState } from "react";
-import { HiDotsHorizontal } from "react-icons/hi";
 import ImageGrid from "./ImageGrid";
 import { PostProps } from "./PostActions";
 import PostPopup from "./PostPopup"; // Add this import
@@ -27,17 +26,33 @@ const EventBox = ({
   return (
     <>
       <div
-        className={`card bg-base-100 shadow-br max-w-2xl mx-auto my-8 ${
+        className={`card bg-base-100 max-w-2xl mx-auto ${
           expanded ? "max-h-[1000px]" : "max-h-[700px]"
         } overflow-hidden`}
       >
-        <div className="card-body flex flex-col">
+        {/* IMAGE GRID */}
+        <div className="px-4">
+          <ImageGrid images={images} />
+        </div>
+
+        <div className="card-body flex flex-col p-4 pt-0 px-6">
+          {/* STATS */}
+          <div className="pt-2">
+            <PostStats
+              id={id}
+              likesStats={likesStats}
+              dislikesStats={dislikesStats}
+              comments={optimisticComments}
+              showPopup={showPopup}
+              setShowPopup={setShowPopup}
+            />
+          </div>
+
           <div>
             {/* Date */}
-            <div className="flex justify-between items-end text-sm text-base-content/60">
+            {/* <div className="flex justify-between items-end text-sm text-base-content/60">
               <span>{date}</span>
-              <HiDotsHorizontal className="text-2xl" />
-            </div>
+            </div> */}
 
             {/* Title */}
             <h2 className="text-base-content font-bold leading-tight br text-2xl">
@@ -51,29 +66,18 @@ const EventBox = ({
               <>{content} </>
             ) : (
               <>
-                {content.length > 100 ? content.slice(0, 100) + "..." : content}
+                {content.length > 200 ? content.slice(0, 200) + "..." : content}
               </>
             )}
-            <button
-              onClick={toggleExpand}
-              className="text-sm text-base-content/50 font-semibold ml-1 hover:underline"
-            >
-              {expanded ? "See less" : "See more..."}
-            </button>
+            {content.length > 200 && (
+              <button
+                onClick={toggleExpand}
+                className="text-sm text-base-content/50 font-semibold ml-1 hover:underline"
+              >
+                {expanded ? "See less" : "See more..."}
+              </button>
+            )}
           </p>
-
-          {/* IMAGE GRID */}
-          <ImageGrid images={images} />
-
-          {/* STATS */}
-          <PostStats
-            id={id}
-            likesStats={likesStats}
-            dislikesStats={dislikesStats}
-            comments={optimisticComments}
-            showPopup={showPopup}
-            setShowPopup={setShowPopup}
-          />
         </div>
       </div>
       {showPopup && (

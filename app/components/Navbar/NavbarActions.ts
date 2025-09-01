@@ -1,9 +1,6 @@
 "use server";
 
-import { User } from "@/app/generated/prisma";
 import { createClient } from "@/lib/supabase/server";
-import { prisma } from "@/prisma/client";
-import { User as supabaseUser } from "@supabase/supabase-js";
 import { redirect } from "next/navigation";
 
 export const signIn = async () => {
@@ -43,28 +40,28 @@ export const signOut = async () => {
   }
 };
 
-export type UserProfile = Pick<User, "id" | "email" | "name" | "image">;
+// export type UserProfile = Pick<User, "id" | "email" | "name" | "image">;
 
-export const getUserProfile = async (supabaseUser: supabaseUser) => {
-  if (!supabaseUser) return null;
-  if (!supabaseUser.id) return null;
-  if (supabaseUser.role !== "authenticated") {
-    return null;
-  }
+// export const getUserProfile = async (supabaseUser: supabaseUser) => {
+//   if (!supabaseUser) return null;
+//   if (!supabaseUser.id) return null;
+//   if (supabaseUser.role !== "authenticated") {
+//     return null;
+//   }
 
-  const profile = await prisma.user.findUnique({
-    where: {
-      authId: supabaseUser.id,
-    },
-    select: {
-      id: true,
-      email: true,
-      name: true,
-      image: true,
-    },
-  });
-  return profile;
-};
+//   const profile = await prisma.user.findUnique({
+//     where: {
+//       authId: supabaseUser.id,
+//     },
+//     select: {
+//       id: true,
+//       email: true,
+//       name: true,
+//       image: true,
+//     },
+//   });
+//   return profile;
+// };
 
 async function getCurrentUser() {
   const supabase = await createClient();

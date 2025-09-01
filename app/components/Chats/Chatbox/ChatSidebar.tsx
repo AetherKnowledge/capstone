@@ -1,5 +1,4 @@
 "use client";
-import { ParsedChat } from "@/@types/network";
 import { ChatType, UserStatus } from "@/app/generated/prisma";
 import { useSocket } from "@/lib/socket/SocketProvider";
 import { Message } from "@/lib/socket/hooks/useMessaging";
@@ -28,7 +27,7 @@ const ChatSidebar = ({ chatId }: ChatSidebarProps) => {
 
   useEffect(() => {
     const fetchChats = async () => {
-      const chats = (await getChats()) as ParsedChat[];
+      const chats = await getChats();
 
       const parsedData = await Promise.all(
         chats.map(

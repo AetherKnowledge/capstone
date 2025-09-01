@@ -9,7 +9,13 @@ const AppointmentPage = async () => {
   if (!session || session.user.type !== UserType.Student)
     return redirect("/user/dashboard");
 
-  return <StudentNewAppointmentPage />;
+  return (
+    <div className="flex-1 pt-25">
+      <div className="bg-base-100 shadow-br rounded-xl">
+        <StudentNewAppointmentPage />
+      </div>
+    </div>
+  );
 };
 
 export default AppointmentPage;

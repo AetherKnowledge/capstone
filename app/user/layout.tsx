@@ -5,6 +5,8 @@ interface Props {
 }
 
 const Layout = ({ children }: Props) => {
+  const defaultClasses = "flex-1 pt-25 bg-base-100 shadow-br rounded-xl";
+
   return (
     <div className="flex bg-base-200 min-h-screen p-6 gap-6">
       {/* Resizable Floating Sidebar */}
@@ -13,9 +15,7 @@ const Layout = ({ children }: Props) => {
       </div>
 
       {/* Main Content Area */}
-      <div className="flex-1 pt-25">
-        <div className="bg-base-100 shadow-br rounded-xl">{children}</div>
-      </div>
+      {children}
     </div>
   );
 };

@@ -31,15 +31,15 @@ function StatButton({
       />
       <div className="swap-on flex flex-col items-center justify-between hover:cursor-pointer">
         {React.createElement(icon, {
-          className: `text-2xl ${color} ${className || ""}`,
+          className: `text-xl ${color} ${className || ""}`,
         })}
-        <p>{`${value.count.toString()} ${label}`}</p>
+        {/* <p>{`${value.count.toString()} ${label}`}</p> */}
       </div>
       <div className="swap-off flex flex-col items-center justify-between hover:cursor-pointer">
         {React.createElement(icon, {
-          className: `text-2xl text-base-content ${className || ""}`,
+          className: `text-xl text-base-content ${className || ""}`,
         })}
-        <p>{`${value.count.toString()} ${label}`}</p>
+        {/* <p>{`${value.count.toString()} ${label}`}</p> */}
       </div>
     </label>
   );

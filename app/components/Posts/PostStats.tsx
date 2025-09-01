@@ -1,8 +1,10 @@
 import { useState } from "react";
-import { AiFillDislike, AiFillHeart, AiFillLike } from "react-icons/ai";
-import { FaCommentAlt } from "react-icons/fa";
+import { FaRegBookmark, FaRegComment, FaRegHeart } from "react-icons/fa6";
+import { HiDotsHorizontal } from "react-icons/hi";
 import { PostComment, PostStat, dislikePost, likePost } from "./PostActions";
 import StatButton from "./StatsButton";
+
+//TODO: Change like to heart
 
 type PostStatsProps = {
   id: string;
@@ -55,46 +57,38 @@ const PostStats = ({
   };
   return (
     <>
-      <div className="divider my-[-4]" />
       <div className="flex justify-between items-center text-sm text-base-content/80">
-        <div className="grid grid-cols-4 gap-4 items-center w-full">
+        <div className="flex items-start gap-4 w-full">
           <StatButton
             onChange={async (value: boolean) => {
               changeStatus(value, true);
             }}
-            icon={AiFillLike}
+            icon={FaRegHeart}
             value={optimisticLikesStats}
             label="Likes"
             color="text-blue-500"
           />
           <StatButton
             onChange={async (value: boolean) => {
-              changeStatus(value, false);
-            }}
-            icon={AiFillDislike}
-            value={optimisticDislikesStats}
-            label="Dislikes"
-            color="text-red-500"
-          />
-          <StatButton
-            onChange={async (value: boolean) => {}}
-            icon={AiFillHeart}
-            value={{ count: 4, selected: false }}
-            label="Saved"
-          />
-          <StatButton
-            onChange={async (value: boolean) => {
               setShowPopup(value);
             }}
-            icon={FaCommentAlt}
+            icon={FaRegComment}
             value={{ count: comments.length, selected: showPopup }}
             label="Comments"
             color="text-yellow-500"
             commentBtn
           />
         </div>
+        <div className="flex items-end gap-4">
+          <StatButton
+            onChange={async (value: boolean) => {}}
+            icon={FaRegBookmark}
+            value={{ count: 4, selected: false }}
+            label="Saved"
+          />
+          <HiDotsHorizontal className="text-2xl" />
+        </div>
       </div>
-      <div className="divider my-[-4]" />
     </>
   );
 };

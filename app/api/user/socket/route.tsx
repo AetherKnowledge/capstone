@@ -1,6 +1,6 @@
 import ClientSocketServer from "@/lib/socket/ClientSocketServer";
 import { getToken } from "next-auth/jwt";
-import { NextRequest } from "next/server";
+import { IncomingMessage } from "node:http";
 import { WebSocket, WebSocketServer } from "ws";
 
 export function GET() {
@@ -10,16 +10,14 @@ export function GET() {
   return new Response("Upgrade Required", { status: 426, headers });
 }
 
-export async function UPGRADE(
+export async function SOCKET(
   client: WebSocket,
-  server: WebSocketServer,
-  request: NextRequest
+  request: IncomingMessage,
+  server: WebSocketServer
 ) {
   console.log("Socket count:", server.clients.size);
 
-  const token = await getToken({
-    req: request,
-  });
+  const token = await getToken({ req: request as any });
   console.log("WebSocket connection attempt by user:", token?.name);
 
   if (!token || !token.sub || !token.email) {
@@ -30,3 +28,24 @@ export async function UPGRADE(
 
   new ClientSocketServer(client, server, token);
 }
+
+// export async function UPGRADE(
+//   client: WebSocket,
+//   server: WebSocketServer,
+//   request: NextRequest
+// ) {
+//   console.log("Socket count:", server.clients.size);
+
+//   const token = await getToken({
+//     req: request,
+//   });
+//   console.log("WebSocket connection attempt by user:", token?.name);
+
+//   if (!token || !token.sub || !token.email) {
+//     console.error("Unauthorized access attempt");
+//     client.close(1008, "Unauthorized");
+//     return;
+//   }
+
+//   new ClientSocketServer(client, server, token);
+// }

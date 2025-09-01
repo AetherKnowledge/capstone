@@ -117,8 +117,6 @@ export async function createPost(formData: FormData): Promise<void> {
     session?.supabaseAccessToken || ""
   );
 
-  console.log(session, bucket);
-
   if (
     !session ||
     !authenticateUser(session, UserType.Admin) ||
@@ -154,21 +152,29 @@ export async function createPost(formData: FormData): Promise<void> {
 
   const postId = post.id;
   const imageUrls: string[] = [];
-  if (images && images.length > 0) {
-    await Promise.all(
-      images.map(async (file) => {
-        if (
-          !file ||
-          !(file instanceof File) ||
-          file.size === 0 ||
-          !session.user.id
-        )
-          return;
+  try {
+    if (images && images.length > 0) {
+      await Promise.all(
+        images.map(async (file) => {
+          if (
+            !file ||
+            !(file instanceof File) ||
+            file.size === 0 ||
+            !session.user.id
+          )
+            return;
 
-        const url = await createFile(file, postId, bucket, session.user.id);
-        imageUrls.push(url);
-      })
-    );
+          const url = await createFile(file, postId, bucket, session.user.id);
+          imageUrls.push(url);
+        })
+      );
+    }
+  } catch (error) {
+    console.error("Error uploading images:", error);
+    await prisma.post.delete({
+      where: { id: postId },
+    });
+    return;
   }
 
   await prisma.post.update({
@@ -211,10 +217,15 @@ export async function createFile(
   const filename = crypto.randomUUID();
   const pathSafe = path.posix.join(userId, `${postId}`, `${filename}.${ext}`);
 
-  bucket.upload(pathSafe, buffer, {
+  const { error } = await bucket.upload(pathSafe, buffer, {
     contentType: type.mime,
     upsert: false,
   });
+
+  if (error) {
+    console.error("Error uploading file:", error);
+    throw new Error("Failed to upload file");
+  }
 
   const url = bucket.getPublicUrl(pathSafe);
   console.log("Uploaded file URL:", url);

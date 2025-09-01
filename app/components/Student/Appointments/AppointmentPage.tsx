@@ -1,6 +1,5 @@
-import React from "react";
-import AppointmentTable from "./AppointmentTable/AppointmentTable";
 import Link from "next/link";
+import AppointmentTable from "./AppointmentTable/AppointmentTable";
 
 const AppointmentPage = () => {
   return (

@@ -8,10 +8,19 @@ const CounselorsPage = async () => {
   const session = await getServerSession(authOptions);
   if (!session) return;
 
-  if (session.user.type === UserType.Student) return <CounselorList />;
-  else if (session.user.type === UserType.Counselor)
-    return <div>Not built</div>;
-  else redirect("/user/dashboard");
+  return (
+    <div className="flex-1 pt-25">
+      <div className="bg-base-100 shadow-br rounded-xl">
+        {session.user.type === UserType.Student ? (
+          <CounselorList />
+        ) : session.user.type === UserType.Counselor ? (
+          <div>Not built</div>
+        ) : (
+          redirect("/user/dashboard")
+        )}
+      </div>
+    </div>
+  );
 };
 
 export default CounselorsPage;

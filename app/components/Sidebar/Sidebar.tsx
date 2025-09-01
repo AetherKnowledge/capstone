@@ -27,7 +27,7 @@ const Sidebar = () => {
     <motion.div
       animate={{ width: isLarge ? "25vw" : "2.5rem" }} // 2.5rem = w-10
       transition={{ duration: 0.3, ease: "easeInOut" }}
-      className="flex flex-col space-y-4 sticky top-10 h-[40vh] min-w-[60px] max-w-[300px] bg-base-100 shadow-br rounded-xl pt-4 pb-4 z-10 overflow-hidden"
+      className="flex flex-col space-y-4 sticky top-31 h-[40vh] min-w-[60px] max-w-[300px] bg-base-100 shadow-br rounded-xl pt-4 pb-4 z-10 overflow-hidden"
     >
       {session.data.user.type === UserType.Student
         ? studentSidebar()
