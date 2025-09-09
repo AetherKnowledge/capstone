@@ -1,7 +1,7 @@
 # 🎓 LCUP Mental Care
 
 A capstone project built for **La Consolacion University Philippines (LCUP)** that streamlines the **student counseling and development process**.  
-The system allows students to **book appointments, attend video counseling sessions, view announcements, and chat with an AI counselor when no human counselor is available.**  
+The system allows students to **book appointments, attend video counseling sessions, view announcements, and chat with an AI chatbot when no human counselor is available.**  
 
 ---
 
