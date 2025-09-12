@@ -5,7 +5,10 @@ const Hero = () => {
   return (
     <>
       <Navbar />
-      <div className="hero w-full h-screen bg-gradient-to-r from-black/95 to-gray-700/95 overflow-hidden py-6">
+      <section
+        id="hero"
+        className="hero w-full h-screen bg-gradient-to-r from-black/95 to-gray-700/95 overflow-hidden py-6"
+      >
         {/* Background image layer */}
         <div
           className="absolute h-screen inset-0 bg-cover bg-center z-0"
@@ -41,7 +44,7 @@ const Hero = () => {
             </div>
           </div>
         </div>
-      </div>
+      </section>
     </>
   );
 };

@@ -1,6 +1,9 @@
 const About = () => {
   return (
-    <div className="flex flex-col bg-base-100 w-full h-full items-center justify-center sm:px-0 md:px-10 lg:px-20 xl:px-32 2xl:px-40">
+    <section
+      id="about"
+      className="flex flex-col bg-base-100 w-full h-full items-center justify-center sm:px-0 md:px-10 lg:px-20 xl:px-32 2xl:px-40"
+    >
       <h2 className="heading-step-2 bg-base-content text-base-100 rounded-md px-5">
         About Us
       </h2>
@@ -111,7 +114,7 @@ const About = () => {
           </svg>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 
