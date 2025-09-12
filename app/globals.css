@@ -83,6 +83,50 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+
+  --heading-step-1: clamp(1.75rem, 3.5vw, 5rem);
+  --heading-step-2: clamp(1.5rem, 3vw, 4.5rem);
+  --text-step-1: clamp(1.2rem, 2vw, 2.5rem);
+  --text-step-2: clamp(1.1rem, 1.8vw, 2.2rem);
+  --text-step-3: clamp(1rem, 1.5vw, 2rem);
+  --text-step-4: clamp(0.875rem, 1.2vw, 1.75rem);
+  --text-step-5: clamp(0.75rem, 1vw, 1.5rem);
+}
+
+.square-image-1 {
+  position: relative;
+  width: clamp(15rem, 25vw, 40rem); /* fixed width */
+  aspect-ratio: 1 / 1;
+  border-radius: var(--radius-box);
+  overflow: hidden; /* ensure rounded corners work */
+}
+
+.heading-step-1 {
+  font-size: var(--heading-step-1);
+}
+
+.heading-step-2 {
+  font-size: var(--heading-step-2);
+}
+
+.text-step-1 {
+  font-size: var(--text-step-1);
+}
+
+.text-step-2 {
+  font-size: var(--text-step-2);
+}
+
+.text-step-3 {
+  font-size: var(--text-step-3);
+}
+
+.text-step-4 {
+  font-size: var(--text-step-4);
+}
+
+.text-step-5 {
+  font-size: var(--text-step-5);
 }
 
 @theme inline {

@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="55" height="55"><svg width="55" height="55" viewBox="10 6 34 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g filter="url(#filter0_dd_2_188)">
+<path d="M42.1458 16.2999C41.8639 17.6675 41.1933 18.9711 40.1321 20.0323L27.4993 32.6651L20.384 25.5499H26.928C29.7818 25.5494 31.4354 22.3167 29.7659 20.002L27.6672 17.0928C27.4288 16.7622 27.6649 16.3001 28.0725 16.2999H42.1458ZM29.6672 9.56744C32.5571 6.67756 37.2422 6.67756 40.1321 9.56744C41.1933 10.6287 41.864 11.9321 42.1458 13.2999H28.0725C25.2185 13.3001 23.5649 16.5329 25.2346 18.8477L27.3333 21.7569C27.5716 22.0874 27.3353 22.5494 26.928 22.5499H17.384L14.8665 20.0323C11.9769 17.1426 11.9771 12.4573 14.8665 9.56744C17.7563 6.67756 22.4424 6.67756 25.3323 9.56744L27.4993 11.7344L29.6672 9.56744Z" fill="#059669"></path>
+</g>
+<defs>
+<filter id="SvgjsFilter1045" x="-3" y="-2" width="61" height="61" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"></feFlood>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"></feColorMatrix>
+<feMorphology radius="3" operator="erode" in="SourceAlpha" result="effect1_dropShadow_2_188"></feMorphology>
+<feOffset dy="10"></feOffset>
+<feGaussianBlur stdDeviation="7.5"></feGaussianBlur>
+<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.1 0"></feColorMatrix>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_2_188"></feBlend>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"></feColorMatrix>
+<feMorphology radius="4" operator="erode" in="SourceAlpha" result="effect2_dropShadow_2_188"></feMorphology>
+<feOffset dy="4"></feOffset>
+<feGaussianBlur stdDeviation="3"></feGaussianBlur>
+<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.1 0"></feColorMatrix>
+<feBlend mode="normal" in2="effect1_dropShadow_2_188" result="effect2_dropShadow_2_188"></feBlend>
+<feBlend mode="normal" in="SourceGraphic" in2="effect2_dropShadow_2_188" result="shape"></feBlend>
+</filter>
+</defs>
+</svg><style>@media (prefers-color-scheme: light) { :root { filter: none; } }
+@media (prefers-color-scheme: dark) { :root { filter: none; } }
+</style></svg>

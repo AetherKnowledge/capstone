@@ -1,8 +1,8 @@
 "use client";
 
-import { useCalling } from "@/lib/socket/hooks/useCalling";
 import { useSession } from "next-auth/react";
 import { createContext, useContext, useEffect, useState } from "react";
+import { useCalling } from "../../../../lib/socket/hooks/useCalling";
 import VideoContainer from "../../Video/VideoContainer";
 
 interface CallPopupContextType {
